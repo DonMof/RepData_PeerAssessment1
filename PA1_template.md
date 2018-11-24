@@ -7,11 +7,33 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r Load Libraries and data, echo=TRUE}
+
+```r
   #Call the required libraries
   library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.4.4
+```
+
+```r
   library(gridExtra)
+```
+
+```
+## Warning: package 'gridExtra' was built under R version 3.4.4
+```
+
+```r
   library(rmarkdown) 
+```
+
+```
+## Warning: package 'rmarkdown' was built under R version 3.4.4
+```
+
+```r
 #Read in data from read.csv file
   ActivityData <- read.csv(file="activity.csv", header=TRUE)
   ActivityDatanoNA <- na.omit(ActivityData)
@@ -19,8 +41,8 @@ output:
 
 ## What is the average daily activity pattern?
 
-```{r Mean Median steps per day and two graphs, echo=TRUE}
 
+```r
 ## What is mean total number of steps taken per day?
   
   #Aggregate the numbers of steps per day and find the sum
@@ -31,40 +53,99 @@ output:
   daysteps$date <- as.Date(daysteps$date,format="%Y-%m-%d")
   
   print("The Mean number of steps per day is:")
+```
+
+```
+## [1] "The Mean number of steps per day is:"
+```
+
+```r
   print(mean(daysteps$steps))
+```
+
+```
+## [1] 10766.19
+```
+
+```r
   print("Median number of steps per day")
+```
+
+```
+## [1] "Median number of steps per day"
+```
+
+```r
   print(median(daysteps$steps))
-  
-  
+```
+
+```
+## [1] 10765
+```
+
+```r
   #Create a histogram of the number of steps per day. This will show the frequency of the number of days at each step per day value
   #The bin value is the default of 30 but could be adjusted.
   
   print(qplot(daysteps$steps, geom="histogram",main="Histogram of number of steps",xlab="Steps", ylab="Frequency of occurrence",ylim=c(0,13)))
-  
-  
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/Mean Median steps per day and two graphs-1.png)<!-- -->
+
+```r
   #Find the mean number of steps per interval
   meanintervals <- aggregate(. ~interval,data=ActivityDatanoNA,mean)
   
   maxinterval <- which.max(meanintervals$steps)
   maxrecord <- meanintervals[maxinterval,]
   print("The interval with the maximum number of steps is:")
+```
+
+```
+## [1] "The interval with the maximum number of steps is:"
+```
+
+```r
   print(maxrecord[,"interval"])
+```
+
+```
+## [1] 835
+```
+
+```r
   #Create a line plot of the number of steps per interval
   
   plot(meanintervals$interval,meanintervals$steps,type="l",xlab="Interval",ylab="steps per interval")
-  
-  
 ```
 
+![](PA1_template_files/figure-html/Mean Median steps per day and two graphs-2.png)<!-- -->
+
 ## Imputing missing values
-```{r Impute missing values and graph, echo=TRUE}
 
-
+```r
   #Report on the number of NAs
   NumberofNAS <- sum(is.na(ActivityData))
   print("Number of NAs")
+```
+
+```
+## [1] "Number of NAs"
+```
+
+```r
   print(NumberofNAS)
-  
+```
+
+```
+## [1] 2304
+```
+
+```r
   #Remove the NAs
   ActivityDatanoNA <- na.omit(ActivityData)
   
@@ -103,20 +184,52 @@ output:
   
   #Mean and median number of steps taken each day
   print("Mean number of steps per day with imputed data added:")
+```
+
+```
+## [1] "Mean number of steps per day with imputed data added:"
+```
+
+```r
   print(mean(daystepsimputed$steps))
+```
+
+```
+## [1] 10766.19
+```
+
+```r
   print("Median number of steps per day with imputed data added:")
+```
+
+```
+## [1] "Median number of steps per day with imputed data added:"
+```
+
+```r
   print(median(daystepsimputed$steps))
-  
+```
+
+```
+## [1] 10766.19
+```
+
+```r
   #Create the plot
   
   print(qplot(daystepsimputed$steps, geom="histogram",main="Histogram of steps with imputed values",xlab="Steps", ylab="Frequencey of occurrence",ylim=c(0,13)))
-  
+```
 
 ```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/Impute missing values and graph-1.png)<!-- -->
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r Differences in weekday and weekend activity patters, echo=TRUE}
+
+```r
  ##Differences in activity patterns between weekdays and weekends
   
   
@@ -173,8 +286,8 @@ output:
   plot1 <- qplot(interval,steps,data= intervalstepsweekend,geom="line",main="Weekend",xlab="Interval",ylab="Number of steps",ylim=c(0,225),colour=I("blue"))  
   plot2 <- qplot(interval,steps,data = intervalstepsweekday,geom="line",main="Weekday",xlab="Interval", ylab="Number of steps)",ylim=c(0,225),colour=I("blue"))
   grid.arrange(plot1, plot2, ncol=1)
-  
-    
 ```
+
+![](PA1_template_files/figure-html/Differences in weekday and weekend activity patters-1.png)<!-- -->
 
 
